@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="card">
+    <view class="label">举报原因</view>
+    <picker range="{{reasons}}" value="{{reasonIndex}}" bindchange="onReasonChange">
+      <view class="picker-value">{{reasons[reasonIndex]}}</view>
+    </picker>
+  </view>
+
+  <view class="card">
+    <view class="label">补充说明</view>
+    <textarea class="input textarea" placeholder="选填，描述具体情况" maxlength="200" value="{{content}}" bindinput="onContent" />
+  </view>
+
+  <view class="submit-wrap">
+    <button class="btn-primary" bindtap="onSubmit" disabled="{{submitting}}">提交举报</button>
+  </view>
+</view>

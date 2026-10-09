@@ -1,0 +1,25 @@
+.page {
+  padding: 24rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.picker-value {
+  background: #F5F6FA;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+}
+
+.textarea {
+  width: 100%;
+  height: 200rpx;
+}
+
+.submit-wrap {
+  padding: 24rpx 16rpx 0;
+}

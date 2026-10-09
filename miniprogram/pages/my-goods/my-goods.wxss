@@ -1,0 +1,74 @@
+.page {
+  padding: 24rpx;
+}
+
+.goods-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.goods-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  background: #F0F1F5;
+  flex-shrink: 0;
+}
+
+.goods-info {
+  margin-left: 20rpx;
+  min-width: 0;
+}
+
+.goods-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-mid {
+  margin-top: 12rpx;
+}
+
+.goods-mid .price {
+  font-size: 30rpx;
+  margin-right: 16rpx;
+}
+
+.goods-time {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-top: 8rpx;
+}
+
+.ops {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx solid #F0F1F5;
+  flex-wrap: wrap;
+}
+
+.op-link {
+  font-size: 26rpx;
+  color: #4F46E5;
+  padding: 8rpx 24rpx;
+  border: 2rpx solid #C9C6F8;
+  border-radius: 32rpx;
+  margin-right: 16rpx;
+}
+
+.op-link.danger {
+  color: #FF4D4F;
+  border-color: #FFD6D7;
+}
+
+.op-note {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  padding: 8rpx 0;
+  margin-left: auto;
+}

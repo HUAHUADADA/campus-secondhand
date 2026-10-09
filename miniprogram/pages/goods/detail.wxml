@@ -1,0 +1,53 @@
+<view class="page" wx:if="{{goods}}">
+  <swiper class="swiper" indicator-dots autoplay="{{goods.images.length > 1}}" circular="{{goods.images.length > 1}}">
+    <swiper-item wx:for="{{goods.images}}" wx:key="index">
+      <image class="swiper-img" src="{{item}}" mode="aspectFill" data-index="{{index}}" bindtap="onPreview" />
+    </swiper-item>
+  </swiper>
+
+  <view class="card">
+    <view class="row">
+      <text class="price title-price">￥{{goods.priceText}}</text>
+      <text class="tag {{goods.status === 'on' ? 'tag-green' : 'tag-gray'}}">{{goods.statusText}}</text>
+    </view>
+    <view class="title">{{goods.title}}</view>
+    <view class="book-info" wx:if="{{goods.bookName || goods.isbn}}">
+      <view class="book-line" wx:if="{{goods.bookName}}">书名：《{{goods.bookName}}》</view>
+      <view class="book-line" wx:if="{{goods.isbn}}">ISBN：{{goods.isbn}}</view>
+    </view>
+    <view class="meta">分类：{{goods.categoryName}} · 浏览 {{goods.views}} · {{goods.timeText}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">商品描述</view>
+    <view class="desc">{{goods.desc || '卖家没有填写描述'}}</view>
+  </view>
+
+  <view class="card seller-card" bindtap="onSellerTap">
+    <view class="seller-avatar">{{goods.sellerName ? goods.sellerName[0] : '闲'}}</view>
+    <view class="flex-1">
+      <view class="seller-name">{{goods.sellerName}}</view>
+      <view class="seller-sub">{{goods.sellerStudentNo ? '学号 ' + goods.sellerStudentNo : '校内用户'}}</view>
+    </view>
+  </view>
+
+  <view class="action-bar safe-bottom">
+    <view class="action-icon" bindtap="onLikeTap">
+      <text class="action-text">{{liked ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="action-icon" bindtap="onReport">
+      <text class="action-text">举报</text>
+    </view>
+    <view class="flex-1"></view>
+    <block wx:if="{{isMine}}">
+      <button class="btn-plain action-btn" bindtap="onManage">我的发布</button>
+      <button wx:if="{{goods.status === 'on'}}" class="btn-primary action-btn" bindtap="onOff">下架</button>
+    </block>
+    <block wx:else>
+      <button wx:if="{{goods.status === 'on'}}" class="btn-primary action-btn" bindtap="onContact">联系卖家</button>
+      <button wx:else class="btn-disabled action-btn">已不可交易</button>
+    </block>
+  </view>
+</view>
+
+<view wx:if="{{loading}}" class="empty">加载中…</view>

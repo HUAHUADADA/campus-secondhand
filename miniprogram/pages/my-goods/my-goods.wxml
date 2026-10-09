@@ -1,0 +1,25 @@
+<view class="page">
+  <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card">
+    <view class="row" data-id="{{item._id}}" bindtap="onDetail">
+      <image class="goods-img" src="{{item.cover}}" mode="aspectFill" />
+      <view class="flex-1 goods-info">
+        <view class="goods-title">{{item.title}}</view>
+        <view class="row goods-mid">
+          <text class="price">￥{{item.priceText}}</text>
+          <text class="tag {{item.status === 'on' ? 'tag-green' : (item.status === 'sold' ? 'tag-green' : 'tag-gray')}}">{{item.statusText}}</text>
+        </view>
+        <view class="goods-time">{{item.timeText}}</view>
+      </view>
+    </view>
+    <view class="row ops">
+      <text class="op-link" wx:if="{{item.status === 'off' || item.status === 'rejected'}}" data-id="{{item._id}}" catchtap="onReapply">重新上架</text>
+      <text class="op-link" wx:if="{{item.status === 'on' || item.status === 'pending'}}" data-id="{{item._id}}" catchtap="onOff">下架</text>
+      <text class="op-link danger" wx:if="{{item.status === 'pending' || item.status === 'off' || item.status === 'rejected'}}" data-id="{{item._id}}" catchtap="onDelete">删除</text>
+      <text class="op-note" wx:if="{{item.status === 'pending'}}">审核中，管理员通过后展示</text>
+      <text class="op-note" wx:if="{{item.status === 'rejected'}}">{{item.rejectReason || '未通过审核'}}</text>
+      <text class="op-note" wx:if="{{item.status === 'sold'}}">已成交，交易完成</text>
+    </view>
+  </view>
+  <view wx:if="{{!goodsList.length && !loading}}" class="empty">还没有发布过商品</view>
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+</view>

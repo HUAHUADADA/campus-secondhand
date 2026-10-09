@@ -1,0 +1,72 @@
+.page {
+  padding: 16rpx 24rpx;
+}
+
+.conv-card {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.conv-avatar {
+  position: relative;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #E8E6FF;
+  color: #4F46E5;
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.badge {
+  position: absolute;
+  top: -6rpx;
+  right: -6rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 8rpx;
+  border-radius: 18rpx;
+  background: #FF4D4F;
+  color: #FFFFFF;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conv-main {
+  min-width: 0;
+}
+
+.conv-name {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.conv-time {
+  font-size: 22rpx;
+  color: #9AA0A6;
+}
+
+.conv-last {
+  font-size: 26rpx;
+  color: #6B7280;
+  margin-top: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-sub {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #C7CBD9;
+}

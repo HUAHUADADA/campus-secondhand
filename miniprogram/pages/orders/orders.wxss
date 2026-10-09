@@ -1,0 +1,101 @@
+.tabs {
+  display: flex;
+  background: #FFFFFF;
+  padding: 0 24rpx;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #4E5566;
+  position: relative;
+}
+
+.tab-active {
+  color: #4F46E5;
+  font-weight: 700;
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: 8rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #4F46E5;
+}
+
+.order-list {
+  padding: 24rpx;
+}
+
+.order-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.role-tag {
+  font-size: 22rpx;
+  color: #4F46E5;
+  background: rgba(79, 70, 229, 0.1);
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+  margin-right: 16rpx;
+}
+
+.other-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.order-status {
+  font-size: 24rpx;
+}
+
+.order-status.completed {
+  color: #0EA371;
+}
+
+.order-status.cancelled {
+  color: #9AA0A6;
+}
+
+.order-status.ongoing {
+  color: #4F46E5;
+}
+
+.order-goods {
+  font-size: 28rpx;
+  color: #4E5566;
+  margin-top: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-bottom {
+  margin-top: 20rpx;
+}
+
+.order-time {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-left: 16rpx;
+}
+
+.review-btn {
+  margin-left: auto;
+  font-size: 24rpx;
+  line-height: 2;
+  padding: 0 28rpx;
+}

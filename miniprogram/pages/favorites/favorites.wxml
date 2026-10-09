@@ -1,0 +1,15 @@
+<view class="page">
+  <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card" data-id="{{item._id}}" bindtap="onGoodsTap">
+    <image class="goods-img" src="{{item.cover}}" mode="aspectFill" />
+    <view class="goods-info">
+      <view class="goods-title">{{item.title}}</view>
+      <view class="row goods-bottom">
+        <text class="price">￥{{item.priceText}}</text>
+        <text class="tag {{item.status === 'on' ? 'tag-green' : 'tag-gray'}}">{{item.statusText}}</text>
+        <text class="remove" catchtap="onRemove" data-id="{{item._id}}">取消收藏</text>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!goodsList.length && !loading}}" class="empty">还没有收藏的商品</view>
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+</view>

@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="header">
+    <view class="search-bar" bindtap="onSearchTap">
+      <text class="search-icon">搜索</text>
+      <text class="search-placeholder">搜索商品 / 书名 / ISBN</text>
+    </view>
+    <scroll-view class="cate-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="cate-list">
+        <view wx:for="{{categories}}" wx:key="key"
+          class="cate-item {{activeKey === item.key ? 'cate-active' : ''}}"
+          data-key="{{item.key}}" bindtap="onCategoryTap">
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="goods-list">
+    <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card" data-id="{{item._id}}" bindtap="onGoodsTap">
+      <image class="goods-img" src="{{item.cover}}" mode="aspectFill" />
+      <view class="goods-info">
+        <view class="goods-title">{{item.title}}</view>
+        <view class="goods-sub" wx:if="{{item.isbn}}">ISBN {{item.isbn}}</view>
+        <view class="row goods-bottom">
+          <text class="price goods-price">￥{{item.priceText}}</text>
+          <text class="tag {{item.status === 'on' ? 'tag-green' : 'tag-gray'}}">{{item.statusText}}</text>
+        </view>
+        <view class="goods-seller">{{item.sellerName}} · {{item.timeText}}</view>
+      </view>
+    </view>
+    <view wx:if="{{!goodsList.length && !firstLoad}}" class="empty">暂时没有商品，点击下方按钮发布第一件闲置吧</view>
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+  </view>
+
+  <view class="publish-btn-wrap safe-bottom">
+    <button class="btn-primary publish-btn" bindtap="onPublishTap">发布闲置</button>
+  </view>
+</view>

@@ -1,0 +1,80 @@
+.page {
+  padding: 24rpx;
+}
+
+.order-info {
+  font-size: 28rpx;
+  color: #4E5566;
+}
+
+.order-price {
+  color: #FF4D4F;
+  font-size: 30rpx;
+  font-weight: 700;
+  margin-top: 8rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  font-size: 56rpx;
+  color: #E0E2E8;
+  margin-right: 16rpx;
+}
+
+.star-on {
+  color: #F5A623;
+}
+
+.textarea {
+  width: 100%;
+  height: 180rpx;
+}
+
+.submit-wrap {
+  padding: 24rpx 16rpx 0;
+}
+
+.review-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.stars-small {
+  font-size: 28rpx;
+}
+
+.review-time {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-left: 16rpx;
+}
+
+.review-content {
+  font-size: 28rpx;
+  color: #1F2329;
+  margin-top: 12rpx;
+  line-height: 1.6;
+}
+
+.review-target {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-top: 12rpx;
+}
+
+.empty-sub {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #C7CBD9;
+}

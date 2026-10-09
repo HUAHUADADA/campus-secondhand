@@ -1,0 +1,21 @@
+<view class="page">
+  <view wx:for="{{convList}}" wx:key="_id" class="conv-card" data-conv="{{item}}" bindtap="onConvTap">
+    <view class="conv-avatar">
+      {{item.otherName[0]}}
+      <view wx:if="{{item.unread > 0}}" class="badge">{{item.unread > 99 ? '99+' : item.unread}}</view>
+    </view>
+    <view class="flex-1 conv-main">
+      <view class="row">
+        <view class="conv-name">{{item.otherName}}</view>
+        <view class="conv-time">{{item.timeText}}</view>
+      </view>
+      <view class="conv-last">{{item.goodsTitle ? '【' + item.goodsTitle + '】' : ''}}{{item.lastMessage}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!convList.length && !loading}}" class="empty">
+    <view>还没有聊天</view>
+    <view class="empty-sub">去商品页找喜欢的闲置，点击「联系卖家」发起聊天</view>
+  </view>
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+</view>

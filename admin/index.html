@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校园闲置汇 · 管理后台</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: #F0F1F6; color: #1F2329; }
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #4F46E5 0%, #7C6FFF 100%); }
+.login-card { background: #fff; border-radius: 16px; padding: 40px; width: 360px; box-shadow: 0 20px 60px rgba(31, 35, 41, 0.3); }
+.login-title { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+.login-sub { font-size: 13px; color: #9AA0A6; text-align: center; margin-bottom: 24px; }
+.login-input { width: 100%; padding: 12px 14px; border: 1px solid #E0E2E8; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 16px; }
+.login-input:focus { border-color: #4F46E5; }
+.login-btn { width: 100%; padding: 12px; background: #4F46E5; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.login-btn:hover { background: #4338CA; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 200px; background: #1B1E2E; color: #C7CBD9; padding: 20px 0; flex-shrink: 0; }
+.brand { padding: 0 20px 24px; font-size: 18px; font-weight: 700; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px; }
+.menu-item { padding: 14px 20px; cursor: pointer; font-size: 14px; }
+.menu-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.menu-item.active { background: #4F46E5; color: #fff; }
+.main { flex: 1; padding: 24px; overflow: auto; }
+.page-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: 14px; padding: 20px; }
+.stat-num { font-size: 30px; font-weight: 700; color: #4F46E5; }
+.stat-label { font-size: 13px; color: #9AA0A6; margin-top: 6px; }
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.chart-card { background: #fff; border-radius: 14px; padding: 16px; }
+.chart-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.chart-box { width: 100%; height: 280px; }
+.toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-group { display: flex; background: #fff; border-radius: 10px; overflow: hidden; }
+.tab-btn { padding: 10px 20px; font-size: 14px; cursor: pointer; color: #4E5566; }
+.tab-btn.active { background: #4F46E5; color: #fff; }
+.input { padding: 10px 14px; border: 1px solid #E0E2E8; border-radius: 10px; font-size: 14px; outline: none; min-width: 200px; }
+.btn { padding: 9px 18px; border: none; border-radius: 10px; font-size: 13px; cursor: pointer; }
+.btn-primary { background: #4F46E5; color: #fff; }
+.btn-green { background: #10B981; color: #fff; }
+.btn-red { background: #FF4D4F; color: #fff; }
+.btn-gray { background: #F0F1F5; color: #4E5566; }
+.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 8px; }
+.table-card { background: #fff; border-radius: 14px; overflow: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 14px 16px; background: #F8F9FC; color: #6B7280; font-weight: 600; border-bottom: 1px solid #F0F1F5; white-space: nowrap; }
+td { padding: 12px 16px; border-bottom: 1px solid #F0F1F5; vertical-align: middle; }
+tr:hover td { background: #FAFAFF; }
+.goods-thumb { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; background: #F0F1F5; }
+.status { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; }
+.status-on { background: rgba(16,185,129,0.12); color: #0EA371; }
+.status-pending { background: rgba(245,166,35,0.14); color: #B7791F; }
+.status-sold { background: rgba(79,70,229,0.12); color: #4F46E5; }
+.status-off, .status-rejected { background: #F0F1F5; color: #6B7280; }
+.status-normal { background: rgba(16,185,129,0.12); color: #0EA371; }
+.status-banned { background: rgba(255,77,79,0.12); color: #FF4D4F; }
+.page-ctrl { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.empty { text-align: center; color: #9AA0A6; padding: 40px 0; }
+.pager { margin-left: auto; display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="login-wrap" v-if="!authed">
+    <div class="login-card">
+      <div class="login-title">校园闲置汇 · 管理后台</div>
+      <div class="login-sub">请输入管理员密钥（云函数 admin 中的 ADMIN_KEY）</div>
+      <input class="login-input" type="password" v-model="key" placeholder="管理员密钥" @keyup.enter="login">
+      <button class="login-btn" @click="login">登录</button>
+      <div style="text-align:center;color:#FF4D4F;font-size:12px;margin-top:12px" v-if="loginError">{{loginError}}</div>
+    </div>
+  </div>
+
+  <div class="layout" v-else>
+    <div class="sidebar">
+      <div class="brand">校园闲置汇<br><span style="font-size:12px;font-weight:400;color:#9AA0A6">管理后台</span></div>
+      <div class="menu-item" :class="{active: page==='stats'}" @click="switchPage('stats')">数据概览</div>
+      <div class="menu-item" :class="{active: page==='goods'}" @click="switchPage('goods')">商品管理</div>
+      <div class="menu-item" :class="{active: page==='users'}" @click="switchPage('users')">用户管理</div>
+      <div class="menu-item" :class="{active: page==='reports'}" @click="switchPage('reports')">举报处理</div>
+      <div class="menu-item" @click="logout">退出登录</div>
+    </div>
+
+    <div class="main">
+      <template v-if="page==='stats'">
+        <div class="page-title">数据概览</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-num">{{stats.usersTotal}}</div><div class="stat-label">注册用户</div></div>
+          <div class="stat-card"><div class="stat-num">{{stats.goodsTotal}}</div><div class="stat-label">商品总数</div></div>
+          <div class="stat-card"><div class="stat-num">{{stats.goodsOn}}</div><div class="stat-label">在售商品</div></div>
+          <div class="stat-card"><div class="stat-num">{{stats.completedTotal}}</div><div class="stat-label">已完成交易</div></div>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title">商品状态分布</div>
+            <div class="chart-box" id="chart-status"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">分类分布</div>
+            <div class="chart-box" id="chart-category"></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">近7天新增（商品 / 订单）</div>
+          <div class="chart-box" id="chart-trend" style="height:300px"></div>
+        </div>
+      </template>
+
+      <template v-else-if="page==='goods'">
+        <div class="page-title">商品管理</div>
+        <div class="toolbar">
+          <div class="tab-group">
+            <div v-for="t in goodsTabs" :key="t.key" class="tab-btn" :class="{active: goodsStatus===t.key}" @click="setGoodsStatus(t.key)">{{t.name}}</div>
+          </div>
+          <button class="btn btn-gray" @click="loadGoods">刷新</button>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead><tr><th>商品</th><th>价格</th><th>分类</th><th>卖家</th><th>状态</th><th>发布时间</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr v-for="g in goodsList" :key="g._id">
+                <td><div style="display:flex;align-items:center;gap:10px">
+                  <img class="goods-thumb" :src="g.cover">
+                  <div>
+                    <div style="font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{g.title}}</div>
+                    <div v-if="g.isbn" style="font-size:12px;color:#9AA0A6">ISBN {{g.isbn}}</div>
+                  </div>
+                </div></td>
+                <td style="color:#FF4D4F;font-weight:700">￥{{g.price}}</td>
+                <td>{{g.categoryName}}</td>
+                <td>{{g.sellerName}}</td>
+                <td><span class="status" :class="'status-'+g.status">{{statusName(g.status)}}</span></td>
+                <td>{{g.createTimeText}}</td>
+                <td>
+                  <button v-if="g.status==='pending'" class="btn btn-green btn-sm" @click="approveGoods(g._id)">通过</button>
+                  <button v-if="g.status==='pending'" class="btn btn-red btn-sm" @click="rejectGoods(g._id)">拒绝</button>
+                  <button v-if="g.status==='on'" class="btn btn-gray btn-sm" @click="offGoods(g._id)">下架</button>
+                </td>
+              </tr>
+              <tr v-if="!goodsList.length"><td colspan="7"><div class="empty">暂无商品</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="page-ctrl">
+          <span style="color:#9AA0A6;font-size:13px">共 {{goodsTotal}} 条</span>
+          <div class="pager">
+            <button class="btn btn-gray btn-sm" @click="goodsPage--;loadGoods()" :disabled="goodsPage===0">上一页</button>
+            <span style="font-size:13px;color:#6B7280">第 {{goodsPage+1}} 页</span>
+            <button class="btn btn-gray btn-sm" @click="goodsPage++;loadGoods()" :disabled="!goodsHasMore">下一页</button>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="page==='users'">
+        <div class="page-title">用户管理</div>
+        <div class="toolbar">
+          <input class="input" v-model="userKeyword" placeholder="搜索昵称 / 姓名 / 学号" @keyup.enter="usersPage=0;loadUsers()">
+          <button class="btn btn-primary" @click="usersPage=0;loadUsers()">搜索</button>
+          <button class="btn btn-gray" @click="userKeyword='';loadUsers()">重置</button>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead><tr><th>用户</th><th>学号</th><th>积分</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr v-for="u in usersList" :key="u._id">
+                <td><div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:36px;height:36px;border-radius:50%;background:#E8E6FF;color:#4F46E5;display:flex;align-items:center;justify-content:center;font-weight:700">{{(u.nickname||u.name||'闲')[0]}}</div>
+                  <div>
+                    <div style="font-weight:600">{{u.nickname || u.name}}</div>
+                    <div style="font-size:12px;color:#9AA0A6">{{u.name}}</div>
+                  </div>
+                </div></td>
+                <td>{{u.studentNo}}</td>
+                <td>{{u.points}}</td>
+                <td><span class="status" :class="'status-'+u.status">{{u.status==='banned'?'已封禁':'正常'}}</span></td>
+                <td>{{u.createTimeText}}</td>
+                <td>
+                  <button v-if="u.status!=='banned'" class="btn btn-red btn-sm" @click="setUserStatus(u._openid,'banned')">封禁</button>
+                  <button v-else class="btn btn-green btn-sm" @click="setUserStatus(u._openid,'normal')">解封</button>
+                </td>
+              </tr>
+              <tr v-if="!usersList.length"><td colspan="6"><div class="empty">暂无用户</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="page-ctrl">
+          <span style="color:#9AA0A6;font-size:13px">共 {{usersTotal}} 人</span>
+          <div class="pager">
+            <button class="btn btn-gray btn-sm" @click="usersPage--;loadUsers()" :disabled="usersPage===0">上一页</button>
+            <span style="font-size:13px;color:#6B7280">第 {{usersPage+1}} 页</span>
+            <button class="btn btn-gray btn-sm" @click="usersPage++;loadUsers()" :disabled="!usersHasMore">下一页</button>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="page==='reports'">
+        <div class="page-title">举报处理</div>
+        <div class="toolbar">
+          <div class="tab-group">
+            <div v-for="t in reportTabs" :key="t.key" class="tab-btn" :class="{active: reportStatus===t.key}" @click="reportStatus=t.key;loadReports()">{{t.name}}</div>
+          </div>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead><tr><th>类型</th><th>原因</th><th>补充说明</th><th>状态</th><th>举报时间</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr v-for="r in reportsList" :key="r._id">
+                <td>{{r.targetType==='goods'?'商品':'用户'}}</td>
+                <td>{{r.reason}}</td>
+                <td style="max-width:260px;color:#6B7280">{{r.content || '—'}}</td>
+                <td><span class="status" :class="r.status==='pending'?'status-pending':'status-off'">{{r.status==='pending'?'待处理':'已处理'}}</span></td>
+                <td>{{r.createTimeText}}</td>
+                <td>
+                  <button v-if="r.status==='pending'" class="btn btn-green btn-sm" @click="handleReport(r)">处理完成</button>
+                  <span v-else style="font-size:12px;color:#9AA0A6">{{r.handleNote}}</span>
+                </td>
+              </tr>
+              <tr v-if="!reportsList.length"><td colspan="6"><div class="empty">暂无举报</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = 'https://YOUR_ENV_ID.service.tcloudbase.com/admin'
+
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      authed: false,
+      key: '',
+      loginError: '',
+      page: 'stats',
+      stats: {},
+      goodsTabs: [{ key: '', name: '全部' }, { key: 'pending', name: '待审核' }, { key: 'on', name: '在售' }, { key: 'sold', name: '已成交' }, { key: 'off', name: '已下架' }, { key: 'rejected', name: '未通过' }],
+      goodsStatus: '',
+      goodsList: [],
+      goodsPage: 0,
+      goodsHasMore: false,
+      goodsTotal: 0,
+      userKeyword: '',
+      usersList: [],
+      usersPage: 0,
+      usersHasMore: false,
+      usersTotal: 0,
+      reportTabs: [{ key: 'pending', name: '待处理' }, { key: 'done', name: '已处理' }],
+      reportStatus: 'pending',
+      reportsList: [],
+      charts: {}
+    }
+  },
+  methods: {
+    login() {
+      this.authed = true
+      this.loginError = ''
+      this.switchPage('stats')
+      this.loadStats()
+    },
+    logout() {
+      this.authed = false
+      this.key = ''
+    },
+    switchPage(p) {
+      this.page = p
+      if (p === 'stats') this.loadStats()
+      if (p === 'goods') this.loadGoods()
+      if (p === 'users') this.loadUsers()
+      if (p === 'reports') this.loadReports()
+    },
+    async api(action, extra) {
+      const res = await fetch(BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ action, key: this.key }, extra || {}))
+      })
+      const text = await res.text()
+      let data
+      try { data = JSON.parse(text) } catch (e) { throw new Error('响应解析失败：' + text.slice(0, 100)) }
+      if (!data.ok) throw new Error(data.msg || '请求失败')
+      return data
+    },
+    async loadStats() {
+      try {
+        const res = await this.api('stats')
+        this.stats = res.stats
+        this.renderCharts(res)
+      } catch (e) {
+        this.alert(e.message)
+      }
+    },
+    renderCharts(res) {
+      this.charts = {}
+      this.$nextTick(() => {
+        this.renderStatus(res.goodsByStatus)
+        this.renderCategory(res.categoryDist)
+        this.renderTrend(res.trend)
+      })
+    },
+    renderStatus(list) {
+      const el = document.getElementById('chart-status')
+      if (!el) return
+      const c = echarts.getInstanceByDom(el) || echarts.init(el)
+      c.setOption({
+        color: ['#10B981', '#F5A623', '#4F46E5', '#9AA0A6'],
+        tooltip: { trigger: 'item' },
+        legend: { bottom: 0, textStyle: { fontSize: 12 } },
+        series: [{
+          type: 'pie', radius: ['42%', '68%'], center: ['50%', '46%'],
+          itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+          label: { formatter: '{b}\n{d}%' },
+          data: list
+        }]
+      })
+    },
+    renderCategory(list) {
+      const el = document.getElementById('chart-category')
+      if (!el) return
+      const c = echarts.getInstanceByDom(el) || echarts.init(el)
+      c.setOption({
+        color: ['#4F46E5', '#7C6FFF', '#10B981', '#F5A623', '#0EA5E9', '#F97316', '#9AA0A6'],
+        tooltip: { trigger: 'item' },
+        legend: { type: 'scroll', bottom: 0, textStyle: { fontSize: 11 } },
+        series: [{
+          type: 'pie', radius: '62%', center: ['50%', '46%'],
+          itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+          label: { show: false },
+          emphasis: { label: { show: true, fontWeight: 'bold' } },
+          data: list
+        }]
+      })
+    },
+    renderTrend(trend) {
+      const el = document.getElementById('chart-trend')
+      if (!el) return
+      const c = echarts.getInstanceByDom(el) || echarts.init(el)
+      c.setOption({
+        color: ['#4F46E5', '#10B981'],
+        tooltip: { trigger: 'axis' },
+        legend: { top: 0, textStyle: { fontSize: 12 } },
+        grid: { left: 40, right: 20, top: 40, bottom: 30 },
+        xAxis: { type: 'category', data: trend.map(t => t.day), axisLine: { lineStyle: { color: '#E0E2E8' } } },
+        yAxis: { type: 'value', minInterval: 1, splitLine: { lineStyle: { color: '#F0F1F5' } } },
+        series: [
+          { name: '新增商品', type: 'bar', barWidth: 18, data: trend.map(t => t.goods) },
+          { name: '新增订单', type: 'line', smooth: true, data: trend.map(t => t.orders) }
+        ]
+      })
+    },
+    setGoodsStatus(key) {
+      this.goodsStatus = key
+      this.goodsPage = 0
+      this.loadGoods()
+    },
+    async loadGoods() {
+      try {
+        const res = await this.api('listGoods', { status: this.goodsStatus, page: this.goodsPage, size: 20 })
+        this.goodsList = res.list
+        this.goodsHasMore = res.hasMore
+        this.goodsTotal = res.total || 0
+      } catch (e) {
+        this.alert(e.message)
+      }
+    },
+    async approveGoods(id) {
+      try {
+        await this.api('approveGoods', { id })
+        this.loadGoods()
+      } catch (e) { this.alert(e.message) }
+    },
+    rejectGoods(id) {
+      wxprompt('请输入拒绝原因', '', reason => {
+        this.api('rejectGoods', { id, reason }).then(() => this.loadGoods()).catch(e => this.alert(e.message))
+      })
+    },
+    async offGoods(id) {
+      try {
+        await this.api('offGoods', { id })
+        this.loadGoods()
+      } catch (e) { this.alert(e.message) }
+    },
+    async loadUsers() {
+      try {
+        const res = await this.api('listUsers', { page: this.usersPage, size: 20, keyword: this.userKeyword })
+        this.usersList = res.list
+        this.usersHasMore = res.hasMore
+        this.usersTotal = res.total || 0
+      } catch (e) {
+        this.alert(e.message)
+      }
+    },
+    async setUserStatus(openid, status) {
+      try {
+        await this.api('setUserStatus', { openid, status })
+        this.loadUsers()
+      } catch (e) { this.alert(e.message) }
+    },
+    async loadReports() {
+      try {
+        const res = await this.api('listReports', { status: this.reportStatus, page: 0, size: 50 })
+        this.reportsList = res.list
+      } catch (e) {
+        this.alert(e.message)
+      }
+    },
+    handleReport(r) {
+      if (r.targetType === 'goods') {
+        wxprompt('处理备注（将同时下架被举报商品）', '', note => {
+          this.api('handleReport', { id: r._id, note }).then(() => this.loadReports()).catch(e => this.alert(e.message))
+        })
+      } else {
+        this.api('handleReport', { id: r._id, note: '已处理' }).then(() => this.loadReports()).catch(e => this.alert(e.message))
+      }
+    },
+    statusName(s) {
+      return { pending: '待审核', on: '在售', sold: '已成交', off: '已下架', rejected: '未通过' }[s] || s
+    },
+    alert(msg) {
+      alert(msg)
+    }
+  }
+}).mount('#app')
+
+function wxprompt(title, def, cb) {
+  const v = window.prompt(title, def)
+  if (v !== null) cb(v)
+}
+</script>
+</body>
+</html>

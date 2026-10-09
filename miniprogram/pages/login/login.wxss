@@ -1,0 +1,119 @@
+.page {
+  min-height: 100vh;
+  padding: 120rpx 48rpx 0;
+}
+
+.logo-area {
+  text-align: center;
+  margin-bottom: 48rpx;
+}
+
+.logo {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 36rpx;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C6FFF 100%);
+  color: #FFFFFF;
+  font-size: 64rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24rpx;
+  box-shadow: 0 12rpx 32rpx rgba(79, 70, 229, 0.35);
+}
+
+.app-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1F2329;
+}
+
+.app-sub {
+  font-size: 24rpx;
+  color: #9AA0A6;
+  margin-top: 8rpx;
+}
+
+.tabs {
+  display: flex;
+  background: #F1F2F6;
+  border-radius: 16rpx;
+  padding: 6rpx;
+  margin-bottom: 32rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  color: #646A73;
+  border-radius: 12rpx;
+}
+
+.tab.active {
+  background: #FFFFFF;
+  color: #4F46E5;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.field {
+  margin-bottom: 28rpx;
+}
+
+.label {
+  font-size: 26rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.login-btn {
+  margin-top: 12rpx;
+}
+
+.forgot {
+  text-align: right;
+  font-size: 24rpx;
+  color: #4F46E5;
+  margin-top: 20rpx;
+}
+
+.notice {
+  text-align: center;
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-top: 24rpx;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 600rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 24rpx;
+}
+
+.modal-text {
+  font-size: 28rpx;
+  color: #1F2329;
+  line-height: 1.6;
+  margin-bottom: 36rpx;
+}

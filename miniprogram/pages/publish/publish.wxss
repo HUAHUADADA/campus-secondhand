@@ -1,0 +1,98 @@
+.page {
+  padding-top: 24rpx;
+  padding-bottom: 60rpx;
+}
+
+.field {
+  margin-bottom: 32rpx;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.tip {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  margin-left: 12rpx;
+  font-weight: 400;
+}
+
+.img-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.img-item {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 20rpx 20rpx 0;
+}
+
+.img-item image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16rpx;
+  background: #F0F1F5;
+}
+
+.img-del {
+  position: absolute;
+  top: -14rpx;
+  right: -14rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(31, 35, 41, 0.75);
+  color: #FFFFFF;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-add {
+  width: 200rpx;
+  height: 200rpx;
+  border: 2rpx dashed #C7CBD9;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9AA0A6;
+}
+
+.add-icon {
+  font-size: 60rpx;
+  line-height: 1;
+}
+
+.add-text {
+  font-size: 22rpx;
+  margin-top: 8rpx;
+}
+
+.picker-value {
+  background: #F5F6FA;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+  color: #1F2329;
+}
+
+.textarea {
+  height: 180rpx;
+  width: 100%;
+}
+
+.submit-wrap {
+  padding: 24rpx 40rpx;
+}

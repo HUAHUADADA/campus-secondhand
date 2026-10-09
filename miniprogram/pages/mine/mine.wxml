@@ -1,0 +1,62 @@
+<view class="page">
+  <view class="user-card" wx:if="{{logged}}" bindtap="onLogin">
+    <view class="avatar">{{user.nickname ? user.nickname[0] : '闲'}}</view>
+    <view class="flex-1">
+      <view class="user-name">{{user.nickname || user.name}}</view>
+      <view class="user-sub">{{user.name}} · 学号 {{user.studentNo}}</view>
+    </view>
+    <view class="points">
+      <view class="points-num">{{user.points}}</view>
+      <view class="points-label">积分</view>
+    </view>
+  </view>
+
+  <view class="user-card guest-card" wx:else bindtap="onLogin">
+    <view class="avatar">闲</view>
+    <view class="flex-1">
+      <view class="user-name">未登录</view>
+      <view class="user-sub">点击登录，使用校园账号</view>
+    </view>
+  </view>
+
+  <view class="card sign-card" wx:if="{{logged}}">
+    <view class="flex-1">
+      <view class="sign-title">每日签到</view>
+      <view class="sign-sub">每天 +5 积分，可抵置顶消耗</view>
+    </view>
+    <button class="btn-primary sign-btn" bindtap="onSignIn">签到</button>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-item" data-url="/pages/my-goods/my-goods" bindtap="go">
+      <text class="menu-icon">发</text>
+      <text class="menu-name">我发布的</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" data-url="/pages/favorites/favorites" bindtap="go">
+      <text class="menu-icon">藏</text>
+      <text class="menu-name">我的收藏</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" data-url="/pages/orders/orders" bindtap="go">
+      <text class="menu-icon">易</text>
+      <text class="menu-name">交易记录</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" data-url="/pages/reviews/reviews" bindtap="go">
+      <text class="menu-icon">评</text>
+      <text class="menu-name">我的评价</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card menu-card" wx:if="{{logged}}">
+    <view class="menu-item" bindtap="onLogout">
+      <text class="menu-icon">退</text>
+      <text class="menu-name">退出登录</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="footer">校园闲置汇 · 仅限本校学生 · 线下当面交易</view>
+</view>

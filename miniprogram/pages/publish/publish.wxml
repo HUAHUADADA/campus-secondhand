@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="card">
+    <view class="field">
+      <view class="label">图片 <text class="tip">{{images.length}}/6</text></view>
+      <view class="img-grid">
+        <view wx:for="{{images}}" wx:key="index" class="img-item">
+          <image src="{{item}}" mode="aspectFill" data-index="{{index}}" bindtap="onPreview" />
+          <view class="img-del" data-index="{{index}}" catchtap="onRemoveImage">×</view>
+        </view>
+        <view wx:if="{{images.length < 6}}" class="img-add" bindtap="onChooseImage">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加图片</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="label">标题</view>
+      <input class="input" placeholder="例如：九成新高等数学教材" maxlength="40" value="{{title}}" bindinput="onTitle" />
+    </view>
+
+    <view class="field">
+      <view class="label">分类</view>
+      <picker range="{{categories}}" range-key="name" value="{{cateIndex}}" bindchange="onCateChange">
+        <view class="picker-value">{{categories[cateIndex].name}}</view>
+      </picker>
+    </view>
+
+    <view class="field" wx:if="{{categories[cateIndex].key === 'book'}}">
+      <view class="label">书名</view>
+      <input class="input" placeholder="教材书名" value="{{bookName}}" bindinput="onBookName" />
+    </view>
+
+    <view class="field" wx:if="{{categories[cateIndex].key === 'book'}}">
+      <view class="label">ISBN码</view>
+      <input class="input" placeholder="教材 ISBN 码（选填，方便检索）" value="{{isbn}}" bindinput="onIsbn" />
+    </view>
+
+    <view class="field">
+      <view class="label">价格（元）</view>
+      <input class="input" type="digit" placeholder="0.00" value="{{price}}" bindinput="onPrice" />
+    </view>
+
+    <view class="field">
+      <view class="label">描述</view>
+      <textarea class="input textarea" placeholder="成色、购入时间、原价、转让原因等" maxlength="500" value="{{desc}}" bindinput="onDesc" />
+    </view>
+
+    <view class="field">
+      <view class="row">
+        <view class="flex-1">
+          <view class="label">置顶 24 小时</view>
+          <view class="tip">消耗 20 积分（当前 {{points}} 分）</view>
+        </view>
+        <switch color="#4F46E5" checked="{{top}}" bindchange="onTopChange" />
+      </view>
+    </view>
+  </view>
+
+  <view class="submit-wrap safe-bottom">
+    <button class="btn-primary" bindtap="onSubmit">发布</button>
+  </view>
+</view>

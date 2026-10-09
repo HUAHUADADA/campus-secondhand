@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="tabs">
+    <view wx:for="{{tabs}}" wx:key="key"
+      class="tab-item {{active === item.key ? 'tab-active' : ''}}"
+      data-key="{{item.key}}" bindtap="onTabTap">{{item.name}}</view>
+  </view>
+
+  <view class="order-list">
+    <view wx:for="{{orderList}}" wx:key="_id" class="order-card" data-conv="{{item.convId}}" bindtap="onOrderTap">
+      <view class="row">
+        <text class="role-tag">{{item.roleName}}</text>
+        <text class="flex-1 other-name">{{item.otherName}}</text>
+        <text class="order-status {{item.status}}">{{item.statusName}}</text>
+      </view>
+      <view class="order-goods">{{item.goodsTitle}}</view>
+      <view class="row order-bottom">
+        <text class="price">￥{{item.priceText}}</text>
+        <text class="order-time">{{item.timeText}}</text>
+        <button wx:if="{{item.status === 'completed'}}" class="btn-plain review-btn" catchtap="onReview" data-id="{{item._id}}">评价</button>
+      </view>
+    </view>
+    <view wx:if="{{!orderList.length && !loading}}" class="empty">暂无交易记录</view>
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+  </view>
+</view>
